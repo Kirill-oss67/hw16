@@ -147,5 +147,55 @@ def get_offers():
 def get_offer(id):
     offer = db.session.query(Offer).get(id)
     result = {'id': offer.id, 'order_id': offer.order_id,
-                       'executor_id': offer.executor_id}
+              'executor_id': offer.executor_id}
     return result
+
+
+def instance_to_dict(instance):
+    """
+    Serialize implementation
+    """
+    return {
+        "id": instance.id,
+        "first_name": instance.first_name,
+        "last_name": instance.last_name,
+        "age": instance.age,
+        "email": instance.email,
+        "role": instance.role,
+        "phone": instance.phone
+    }
+
+
+def create_user(data):
+    user = User(
+        id=data.get('id'),
+        first_name=data.get('first_name'),
+        last_name=data.get('last_name'),
+        age=data.get('age'),
+        email=data.get('email'),
+        role=data.get('role'),
+        phone=data.get('phone'))
+
+    db.session.add(user)
+    db.session.commit()
+    return instance_to_dict(user)
+
+
+def update_user_by_id(id, data):
+    user = db.session.query(User).get(id)
+    setattr(user, 'first_name', data['first_name'])
+    setattr(user, 'last_name', data['last_name']),
+    setattr(user, 'age', data['age']),
+    setattr(user, 'email', data['email']),
+    setattr(user, 'role', data['role']),
+    setattr(user, 'phone', data['phone']),
+    db.session.add(user)
+    db.session.commit()
+    return instance_to_dict(db.session.query(User).get(id))
+
+def delete_user(id):
+    user = db.session.query(User).get(id)
+    db.session.delete(user)
+    db.session.commit()
+
+
