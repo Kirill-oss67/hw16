@@ -123,12 +123,29 @@ def get_orders():
                        'executor_id': order.executor_id})
     return result
 
+
 def get_order(id):
     order = db.session.query(Order).get(id)
     result = {'id': order.id, 'name': order.name,
-                       'description': order.description,
-                       'start_date': order.start_date, 'end_date': order.end_date,
-                       'address': order.address,
-                       'price': order.price, 'customer_id': order.customer_id,
-                       'executor_id': order.executor_id}
+              'description': order.description,
+              'start_date': order.start_date, 'end_date': order.end_date,
+              'address': order.address,
+              'price': order.price, 'customer_id': order.customer_id,
+              'executor_id': order.executor_id}
+    return result
+
+
+def get_offers():
+    result = []
+    offers = db.session.query(Offer).all()
+    for offer in offers:
+        result.append({'id': offer.id, 'order_id': offer.order_id,
+                       'executor_id': offer.executor_id})
+    return result
+
+
+def get_offer(id):
+    offer = db.session.query(Offer).get(id)
+    result = {'id': offer.id, 'order_id': offer.order_id,
+                       'executor_id': offer.executor_id}
     return result
