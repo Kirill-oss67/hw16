@@ -22,7 +22,5 @@ app.register_blueprint(pages_blueprint)
 
 
 
-
-
 if __name__ == "__main__":
     app.run(debug=True, port=2345)

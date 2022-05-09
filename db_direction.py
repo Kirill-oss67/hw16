@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from utils import get_json_data
+from util import get_json_data
 
 db = SQLAlchemy()
 
@@ -152,9 +152,6 @@ def get_offer(id):
 
 
 def instance_to_dict(instance):
-    """
-    Serialize implementation
-    """
     return {
         "id": instance.id,
         "first_name": instance.first_name,
@@ -193,9 +190,67 @@ def update_user_by_id(id, data):
     db.session.commit()
     return instance_to_dict(db.session.query(User).get(id))
 
+
 def delete_user(id):
     user = db.session.query(User).get(id)
     db.session.delete(user)
     db.session.commit()
 
 
+def create_order(data):
+    order = Order(
+        name=data.get('name'),
+        description=data.get('description'),
+        start_date=data.get('start_date'),
+        end_date=data.get('end_date'),
+        address=data.get('address'),
+        price=data.get('price'),
+        customer_id=data.get('customer_id'),
+        executor_id=data.get('executor_id'))
+    db.session.add(order)
+    db.session.commit()
+
+
+
+def delete_order(id):
+    order = db.session.query(Order).get(id)
+    db.session.delete(order)
+    db.session.commit()
+
+
+def delete_offer(id):
+    offer = db.session.query(Offer).get(id)
+    db.session.delete(offer)
+    db.session.commit()
+
+
+def create_offer(data):
+    offer = Offer(
+        order_id=data.get('order_id'),
+        executor_id=data.get('executor_id'))
+    db.session.add(offer)
+    db.session.commit()
+
+
+def update_order_by_id(id, data):
+    order = db.session.query(Order).get(id)
+    setattr(order, 'name', data['name'])
+    setattr(order, 'description', data['description']),
+    setattr(order, 'start_date', data['start_date']),
+    setattr(order, 'end_date', data['end_date']),
+    setattr(order, 'address', data['address']),
+    setattr(order, 'price', data['price']),
+    setattr(order, 'customer_id', data['customer_id']),
+    setattr(order, 'executor_id', data['executor_id'])
+    db.session.add(order)
+    db.session.commit()
+    return 'updated'
+
+
+def update_offer_by_id(id, data):
+    offer = db.session.query(Offer).get(id)
+    setattr(offer, 'order_id', data['order_id'])
+    setattr(offer, 'executor_id', data['executor_id']),
+    db.session.add(offer)
+    db.session.commit()
+    return 'updated'
