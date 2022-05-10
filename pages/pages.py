@@ -18,21 +18,24 @@ def get_all_users():
 
 @pages_blueprint.route('/users/<int:id>', methods=["GET", "PUT", 'DELETE'])
 def get_one_user(id):
-    if request.method == 'GET':
-        return jsonify(get_user_by_id(id))
-    elif request.method == "PUT":
-        data = request.json
-        return jsonify(update_user_by_id(id, data))
-    elif request.method == "DELETE":
-        delete_user(id)
-        return "deleted"
+    try:
+        if request.method == 'GET':
+            return jsonify(get_user_by_id(id))
+        elif request.method == "PUT":
+            data = request.json
+            return jsonify(update_user_by_id(id, data))
+        elif request.method == "DELETE":
+            delete_user(id)
+            return "deleted"
+    except:
+        return 'Введено несуществуещее значение'
 
 
 @pages_blueprint.route('/orders', methods=['GET', 'POST'])
 def get_all_orders():
     if request.method == 'GET':
         return jsonify(get_orders())  # шаг 4
-    elif request.method == 'POST':      # метод ПОСТ для добавления заказа
+    elif request.method == 'POST':  # метод ПОСТ для добавления заказа
         data = request.json
         create_order(data)
         return 'posted'
@@ -40,14 +43,17 @@ def get_all_orders():
 
 @pages_blueprint.route('/orders/<int:id>', methods=["GET", "PUT", 'DELETE'])
 def get_one_order(id):
-    if request.method == 'GET':
-        return jsonify(get_order(id))
-    elif request.method == "DELETE":
-        delete_order(id)
-        return 'deleted'
-    elif request.method == "PUT":
-        data = request.json
-        return jsonify(update_order_by_id(id, data))
+    try:
+        if request.method == 'GET':
+            return jsonify(get_order(id))
+        elif request.method == "DELETE":
+            delete_order(id)
+            return 'deleted'
+        elif request.method == "PUT":
+            data = request.json
+            return jsonify(update_order_by_id(id, data))
+    except:
+        return 'Введено несуществуещее значение'
 
 
 @pages_blueprint.route('/offers', methods=['GET', 'POST'])
@@ -62,11 +68,15 @@ def get_all_offers():
 
 @pages_blueprint.route('/offers/<int:id>', methods=["GET", "PUT", 'DELETE'])
 def get_one_offer(id):
-    if request.method == 'GET':
-        return jsonify(get_offer(id))
-    elif request.method == "DELETE":
-        delete_offer(id)                # Использование 3 методов ["GET", "PUT", 'DELETE'] для получения, обновления и удаления данных предложения
-        return 'deleted'
-    elif request.method == "PUT":
-        data = request.json
-        return jsonify(update_offer_by_id(id, data))
+    try:
+        if request.method == 'GET':
+            return jsonify(get_offer(id))
+        elif request.method == "DELETE":
+            delete_offer(
+                id)  # Использование 3 методов ["GET", "PUT", 'DELETE'] для получения, обновления и удаления данных предложения
+            return 'deleted'
+        elif request.method == "PUT":
+            data = request.json
+            return jsonify(update_offer_by_id(id, data))
+    except:
+        return 'Введено несуществуещее значение'
